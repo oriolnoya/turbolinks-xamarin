@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{5C07B57E-84F0-4641-B5D8-CA70E7DB0A60}</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Turbolinks.iOS</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Enums\Action.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enums\ScriptMessageName.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ScriptMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enums\ErrorCode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NSError.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Session.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\ISessionDelegate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visitable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WebView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visit.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Enums\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Extensions\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Interfaces\" />
+  </ItemGroup>
+</Project>
