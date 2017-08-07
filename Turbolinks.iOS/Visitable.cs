@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Turbolinks.iOS
 {
-    public class Visitable
+    public abstract class Visitable
     {
         public Visitable()
         {

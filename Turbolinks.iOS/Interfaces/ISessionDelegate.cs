@@ -4,16 +4,16 @@
 
     public interface ISessionDelegate
     {
-        void SessionDidProposeVisitToURLWithAction(Session session, Foundation.NSUrl URL, Action action);
+        void DidProposeVisitToURL(Foundation.NSUrl URL, Action action);
 
-        void SessionDidFailRequestForVisitableWithError(Session session, Visitable visitable, NSError error);
+        void DidFailRequestForVisitable(Visitable visitable, NSError error);
 
-        void SessionOpenExternalURL(Session session, Foundation.NSUrl URL);
+        void OpenExternalURL(Foundation.NSUrl URL);
 
-        void SessionDidLoadWebView(Session session);
+        void DidLoadWebView();
 
-        void SessionDidStartRequest(Session session);
+        void DidStartRequest();
 
-        void SessionDidFinishRequest(Session session);
+        void DidFinishRequest();
     }
 }

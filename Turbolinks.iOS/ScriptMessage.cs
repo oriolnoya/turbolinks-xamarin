@@ -1,6 +1,7 @@
 ﻿namespace Turbolinks.iOS
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using Foundation;
     using Turbolinks.iOS.Enums;
@@ -9,13 +10,16 @@
     public class ScriptMessage
     {
         ScriptMessageName _name;
-        NSDictionary _data;
+        Dictionary<string, object> _data;
 
-        public ScriptMessage(ScriptMessageName name, NSDictionary data)
+        public ScriptMessage(ScriptMessageName name, Dictionary<string, object> data)
         {
             _name = name;
             _data = data;
         }
+
+        public ScriptMessageName Name => _name;
+        public Dictionary<string, object> Data => _data;
 
         public string Identifier => _data["identifier"]?.ToString() ?? string.Empty;
 
@@ -35,7 +39,17 @@
 
             var data = body["data"] as NSDictionary;
 
-            return new ScriptMessage(scriptMessageName, data);
+            return new ScriptMessage(scriptMessageName, ConvertToDictionary(data));
+        }
+
+        static Dictionary<string, object> ConvertToDictionary(NSDictionary nativeDict)
+        {
+            var dict = new Dictionary<string, object>();
+
+			foreach (var item in nativeDict)
+                dict.Add((NSString)item.Key, item.Value);
+
+			return dict;
         }
     }
 }

@@ -2,11 +2,11 @@
 {
     using System;
     using Foundation;
-    using Turbolinks.iOS.Enums;
     using Turbolinks.iOS.Interfaces;
+    using Turbolinks.iOS.WebViews;
     using WebKit;
 
-    public class Session : NSObject
+    public class Session : NSObject, IWebViewDelegate
     {
         ISessionDelegate _delegate;
 
@@ -126,12 +126,33 @@
 
         void CompleteNavigtationForCurrentVisit()
         {
-            if(_currentVisit != null)
+            if (_currentVisit != null)
             {
                 _topMostVisit = _currentVisit;
                 _currentVisit.CompleteNavigation();
             }
         }
+
+		#endregion
+
+
+
+		#region IWebViewDelegate implementation
+
+		void IWebViewDelegate.DidProposeVisit(NSUrl location, Enums.Action action)
+		{
+			throw new NotImplementedException();
+		}
+
+		void IWebViewDelegate.DidInvalidatePage()
+		{
+			throw new NotImplementedException();
+		}
+
+		void IWebViewDelegate.DidFailJavaScriptEvaluation(Foundation.NSError error)
+		{
+			throw new NotImplementedException();
+		}
 
 
         #endregion

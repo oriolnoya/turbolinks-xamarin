@@ -17,12 +17,16 @@
     <Compile Include="$(MSBuildThisFileDirectory)Session.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\ISessionDelegate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Visitable.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)WebView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Visit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WebView\IWebViewDelegate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WebView\WebView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WebView\IWebViewPageLoadDelegate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WebView\IWebViewVisitDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Enums\" />
     <Folder Include="$(MSBuildThisFileDirectory)Extensions\" />
     <Folder Include="$(MSBuildThisFileDirectory)Interfaces\" />
+    <Folder Include="$(MSBuildThisFileDirectory)WebView\" />
   </ItemGroup>
 </Project>
