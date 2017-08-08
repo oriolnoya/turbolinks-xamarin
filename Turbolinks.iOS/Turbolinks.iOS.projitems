@@ -26,6 +26,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Visitable\IVisitableDelegate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\VisitState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Visit\ColdBootVisit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visit\JavaScriptVisit.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Enums\" />

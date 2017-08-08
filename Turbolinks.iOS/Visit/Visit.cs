@@ -3,17 +3,17 @@
     using System;
     using Foundation;
 
-    public partial class Visit : NSObject
+    public class Visit : NSObject
     {
         protected IVisitDelegate _delegate;
 
         Visitable _visitable;
-        Enums.Action _action;
+        protected Enums.Action _action;
         protected WebView _webView;
         Enums.VisitState _state;
 
         protected NSUrl _location;
-        bool _hasCachedSnapshot;
+        protected bool _hasCachedSnapshot;
         protected string _restorationIdentifier;
 
         public Visit(Visitable visitable, Enums.Action action, WebView webView)
@@ -88,7 +88,7 @@
             }
         }
 
-        void AfterNavigationCompletion(Action callback)
+        protected void AfterNavigationCompletion(Action callback)
         {
             if (_navigationCompleted)
                 callback.Invoke();

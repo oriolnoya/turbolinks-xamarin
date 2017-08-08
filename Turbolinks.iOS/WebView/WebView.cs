@@ -40,36 +40,42 @@
 			set => _pageLoadDelegate = value;
 		}
 
+		public IWebViewVisitDelegate VisitDelegate
+		{
+            get => _visitDelegate;
+            set => _visitDelegate = value;
+		}
+
         public WebView(NSCoder coder) : base(coder)
         {
         }
 
-        void VisitLocation(NSUrl location, Enums.Action action, string restorationIdentifier = "")
+        public void VisitLocation(NSUrl location, Enums.Action action, string restorationIdentifier = "")
         {
             CallJavascriptFunction("webView.visitLocationWithActionAndRestorationIdentifier", new object[]{location.AbsoluteString, (int)action, restorationIdentifier});
         }
 
-        void IssueRequestForVisit(string identifier)
+        public void IssueRequestForVisit(string identifier)
         {
             CallJavascriptFunction("webView.issueRequestForVisitWithIdentifier", new object[] { identifier });
         }
 
-        void ChangeHistoryForVisit(string identifier)
+        public void ChangeHistoryForVisit(string identifier)
         {
             CallJavascriptFunction("webView.changeHistoryForVisitWithIdentifier", new object[] { identifier });
         }
 
-		void LoadCachedSnapshotForVisit(string identifier)
+		public void LoadCachedSnapshotForVisit(string identifier)
 		{
 			CallJavascriptFunction("webView.loadCachedSnapshotForVisitWithIdentifier", new object[] { identifier });
 		}
 
-		void LoadResponseForVisit(string identifier)
+		public void LoadResponseForVisit(string identifier)
 		{
 			CallJavascriptFunction("webView.loadResponseForVisitWithIdentifier", new object[] { identifier });
 		}
 
-		void CancelVisit(string identifier)
+		public void CancelVisit(string identifier)
 		{
 			CallJavascriptFunction("webView.cancelVisitWithIdentifier", new object[] { identifier });
 		}
