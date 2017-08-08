@@ -3,10 +3,9 @@
     using System;
     using Foundation;
     using Turbolinks.iOS.Interfaces;
-    using Turbolinks.iOS.WebViews;
     using WebKit;
 
-    public class Session : NSObject, IWebViewDelegate
+    public class Session : NSObject, IWebViewDelegate, IWKNavigationDelegate, IVisitDelegate, IVisitableDelegate
     {
         ISessionDelegate _delegate;
 
@@ -153,6 +152,76 @@
 		{
 			throw new NotImplementedException();
 		}
+
+		#endregion
+
+
+
+		#region IVisitDelegate implementation
+		
+        void IVisitDelegate.DidInitializeWebView(Visit visit)
+        {
+            _initialized = true;
+            _delegate?.DidLoadWebView();
+        }
+
+        void IVisitDelegate.WillStart(Visit visit)
+        {
+            visit.Visitable.ShowVisitableScreenshot();
+            ActivateVisitable(visit.Visitable);
+        }
+
+        void IVisitDelegate.DidStart(Visit visit)
+        {
+            
+        }
+
+        void IVisitDelegate.DidComplete(Visit visit)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IVisitDelegate.DidFail(Visit visit)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IVisitDelegate.DidFinish(Visit visit)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IVisitDelegate.WillLoadResponse(Visit visit)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IVisitDelegate.DidRender(Visit visit)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IVisitDelegate.RequestDidStart(Visit visit)
+        {
+            _delegate.DidStartRequest();
+        }
+
+        void IVisitDelegate.RequestDidFail(Visit visit, Foundation.NSError error)
+        {
+            _delegate?.DidFailRequestForVisitable(visit.Visitable, error);
+        }
+
+        void IVisitDelegate.RequestDidFinish(Visit visit)
+        {
+            _delegate.DidFinishRequest();
+        }
+
+        #endregion
+
+
+
+        #region IWKNavigationDelegate implementation
+
 
 
         #endregion

@@ -24,7 +24,7 @@
 		{
 		}
 
-        public NSError(ErrorCode code, NSError error) :
+        public NSError(ErrorCode code, Foundation.NSError error) :
 			base(new NSString(ErrorDomain),
 				 new nint((int)code),
 				 NSDictionary.FromObjectsAndKeys(

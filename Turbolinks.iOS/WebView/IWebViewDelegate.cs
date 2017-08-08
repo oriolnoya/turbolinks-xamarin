@@ -1,4 +1,4 @@
-﻿namespace Turbolinks.iOS.WebViews
+﻿namespace Turbolinks.iOS
 {
     using Foundation;
 
@@ -8,6 +8,6 @@
 
         void DidInvalidatePage();
 
-        void DidFailJavaScriptEvaluation(NSError error);
+        void DidFailJavaScriptEvaluation(Foundation.NSError error);
     }
 }

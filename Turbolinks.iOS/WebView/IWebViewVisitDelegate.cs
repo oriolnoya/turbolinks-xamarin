@@ -1,4 +1,4 @@
-﻿namespace Turbolinks.iOS.WebViews
+﻿namespace Turbolinks.iOS
 {
     public interface IWebViewVisitDelegate
     {

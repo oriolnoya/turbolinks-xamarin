@@ -1,4 +1,4 @@
-﻿namespace Turbolinks.iOS.WebViews
+﻿namespace Turbolinks.iOS
 {
     using System;
     using CoreGraphics;
@@ -33,6 +33,12 @@
             get => _delegate;
             set => _delegate = value;
         }
+
+		public IWebViewPageLoadDelegate PageLoadDelegate
+		{
+			get => _pageLoadDelegate;
+			set => _pageLoadDelegate = value;
+		}
 
         public WebView(NSCoder coder) : base(coder)
         {
