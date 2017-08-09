@@ -8,7 +8,7 @@
     {
         WKNavigation _navigation;
 
-        public ColdBootVisit(Visitable visitable, Enums.Action action, WebView webView) : base(visitable, action, webView)
+        public ColdBootVisit(IVisitable visitable, Enums.Action action, WebView webView) : base(visitable, action, webView)
         {
         }
 

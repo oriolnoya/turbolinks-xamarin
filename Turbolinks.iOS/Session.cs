@@ -28,16 +28,16 @@
         Visit _currentVisit;
         Visit _topMostVisit;
 
-        public Visitable TopMostVisitable => _topMostVisit?.Visitable;
+        public IVisitable TopMostVisitable => _topMostVisit?.Visitable;
 
-        public void Visit(Visitable visitable)
+        public void Visit(IVisitable visitable)
         {
             VisitVisitable(visitable, Enums.Action.Advance);
         }
 
-        void VisitVisitable(Visitable visitable, Enums.Action action)
+        void VisitVisitable(IVisitable visitable, Enums.Action action)
         {
-            if (visitable.VisitableURL == null)
+            if (visitable.VisitableUrl == null)
                 return;
 
             visitable.VisitableDelegate = this;
@@ -46,12 +46,12 @@
 
             if (_initialized)
             {
-                visit = new JavascriptVisit(visitable, action, _webView);
+                visit = new JavaScriptVisit(visitable, action, _webView);
                 visit.RestorationIdentifier = RestorationIdentifierForVisitable(visitable);
             }
             else
             {
-                visit = ColdBootVisit(visitable, action, _webView);
+                visit = new ColdBootVisit(visitable, action, _webView);
             }
 
             _currentVisit?.Cancel();
@@ -76,9 +76,9 @@
 
         #region Visitable activation
 
-        Visitable _activatedVisitable;
+        IVisitable _activatedVisitable;
 
-        void ActivateVisitable(Visitable visitable)
+        void ActivateVisitable(IVisitable visitable)
         {
             if (visitable != _activatedVisitable)
             {
@@ -90,7 +90,7 @@
             }
         }
 
-        void DeactivateVisitable(Visitable visitable, bool showScreenshot = false)
+        void DeactivateVisitable(IVisitable visitable, bool showScreenshot = false)
         {
             if (visitable == _activatedVisitable)
             {
@@ -113,12 +113,12 @@
 
         NSDictionary _visitableRestorationIdentifiers = new NSDictionary();
 
-        string RestorationIdentifierForVisitable(Visitable visitable)
+        string RestorationIdentifierForVisitable(IVisitable visitable)
         {
-            return _visitableRestorationIdentifiers.ObjectForKey(visitable.VisitableViewController);
+            return _visitableRestorationIdentifiers.ObjectForKey(visitable.VisitableViewController).ToString();
         }
 
-        void StoreRestorationIdentifier(string restorationIdentifier, Visitable visitable)
+        void StoreRestorationIdentifier(string restorationIdentifier, IVisitable visitable)
         {
             _visitableRestorationIdentifiers.SetValueForKey(new NSString(restorationIdentifier), visitable.VisitableViewController);
         }
@@ -214,6 +214,26 @@
         void IVisitDelegate.RequestDidFinish(Visit visit)
         {
             _delegate.DidFinishRequest();
+        }
+
+        void IVisitableDelegate.ViewWillAppear(IVisitable visitable)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IVisitableDelegate.ViewDidAppear(IVisitable visitable)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IVisitableDelegate.DidRequestReload(IVisitable visitable)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IVisitableDelegate.DidRequestRefresh(IVisitable visitable)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

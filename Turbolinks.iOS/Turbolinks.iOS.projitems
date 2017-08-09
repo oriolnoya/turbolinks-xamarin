@@ -22,11 +22,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)WebView\IWebViewVisitDelegate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Visit\Visit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Visit\IVisitDelegate.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Visitable\Visitable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visitable\IVisitable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Visitable\IVisitableDelegate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\VisitState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Visit\ColdBootVisit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Visit\JavaScriptVisit.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visitable\VisitableView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visitable\VisitableViewController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Enums\" />

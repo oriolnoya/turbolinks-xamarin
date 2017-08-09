@@ -7,7 +7,7 @@
     {
         protected IVisitDelegate _delegate;
 
-        Visitable _visitable;
+        IVisitable _visitable;
         protected Enums.Action _action;
         protected WebView _webView;
         Enums.VisitState _state;
@@ -16,7 +16,7 @@
         protected bool _hasCachedSnapshot;
         protected string _restorationIdentifier;
 
-        public Visit(Visitable visitable, Enums.Action action, WebView webView)
+        public Visit(IVisitable visitable, Enums.Action action, WebView webView)
         {
             _visitable = visitable;
             _location = visitable.VisitableUrl;
@@ -25,9 +25,21 @@
             _state = Enums.VisitState.Initialized;
         }
 
-        public IVisitDelegate Delegate => _delegate;
+        public IVisitDelegate Delegate
+		{
+            get => _delegate;
+			set => _delegate = value;
+		}
 
-        void Start()
+        public IVisitable Visitable => _visitable;
+
+        public string RestorationIdentifier
+        {
+            get => _restorationIdentifier;
+            set => _restorationIdentifier = value;
+        }
+
+        public void Start()
         {
             if (_state == Enums.VisitState.Initialized)
             {
@@ -37,7 +49,7 @@
             }
         }
 
-        void Cancel()
+        public void Cancel()
         {
             if (_state == Enums.VisitState.Started)
             {
@@ -79,7 +91,7 @@
         bool _navigationCompleted = false;
         Action _navigationCallback;
 
-        void CompleteNavigation()
+        public void CompleteNavigation()
         {
             if (_state == Enums.VisitState.Started && !_navigationCompleted)
             {

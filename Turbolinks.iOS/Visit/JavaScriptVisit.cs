@@ -5,7 +5,7 @@ namespace Turbolinks.iOS
     {
         string _identifier = "(pending)";
 
-        public JavaScriptVisit(Visitable visitable, Enums.Action action, WebView webView) : base(visitable, action, webView)
+        public JavaScriptVisit(IVisitable visitable, Enums.Action action, WebView webView) : base(visitable, action, webView)
         {
         }
 

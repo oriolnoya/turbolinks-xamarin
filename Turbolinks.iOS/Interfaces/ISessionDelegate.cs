@@ -6,7 +6,7 @@
     {
         void DidProposeVisitToURL(Foundation.NSUrl URL, Action action);
 
-        void DidFailRequestForVisitable(Visitable visitable, NSError error);
+        void DidFailRequestForVisitable(IVisitable visitable, NSError error);
 
         void OpenExternalURL(Foundation.NSUrl URL);
 
