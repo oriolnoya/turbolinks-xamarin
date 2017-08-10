@@ -23,7 +23,11 @@
         }
 
         public WKWebView WebView => _webView;
-
+        public ISessionDelegate Delegate
+        {
+            get => _delegate;
+            set => _delegate = value;
+        }
 
         #region Visiting
 
