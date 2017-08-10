@@ -82,7 +82,7 @@
 
 
 
-        void CallJavascriptFunction(string functionExpression, object[] arguments)
+        void CallJavascriptFunction(string functionExpression, object[] arguments, Action<NSObject> completionHandler = null)
         {
             var script = ScriptForCallingJavascriptFunction(functionExpression, arguments);
 
@@ -99,8 +99,8 @@
 
                     if (!string.IsNullOrEmpty(resultError) && !string.IsNullOrEmpty(resultStack))
                         Console.WriteLine($"Error evaluating JavaScript function {functionExpression}: {resultError}\n{resultStack}");
-                    //else
-                        //CompletionHandler ? (resultDictionary["value"]);
+                    else
+                        completionHandler?.Invoke(resultDictionary["value"]);
                 }
                 else if(error != null)
                 {

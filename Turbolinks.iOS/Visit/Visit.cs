@@ -39,6 +39,9 @@
             set => _restorationIdentifier = value;
         }
 
+        public bool HasCachedSnapshot => _hasCachedSnapshot;
+        public Enums.VisitState State => _state;
+
         public void Start()
         {
             if (_state == Enums.VisitState.Initialized)

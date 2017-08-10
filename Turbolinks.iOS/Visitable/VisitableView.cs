@@ -1,6 +1,5 @@
 ﻿namespace Turbolinks.iOS
 {
-    using System;
     using CoreGraphics;
     using Foundation;
     using UIKit;
@@ -187,7 +186,25 @@
 
         public void UpdateScreenshot()
         {
-            // TODO
+            if (WebView == null) return;
+            if (!IsShowingScreenshot) return;
+
+            var screenshot = WebView.SnapshotView(false);
+            if (screenshot == null) return;
+
+            _screenshotView?.RemoveFromSuperview();
+            screenshot.TranslatesAutoresizingMaskIntoConstraints = false;
+            ScreenshotContainerView.AddSubview(screenshot);
+
+            ScreenshotContainerView.AddConstraints(new NSLayoutConstraint[]
+            {
+                NSLayoutConstraint.Create(screenshot, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, ScreenshotContainerView, NSLayoutAttribute.CenterX, 1, 0),
+                NSLayoutConstraint.Create(screenshot, NSLayoutAttribute.Top, NSLayoutRelation.Equal, ScreenshotContainerView, NSLayoutAttribute.Top, 1, 0),
+                NSLayoutConstraint.Create(screenshot, NSLayoutAttribute.Width, NSLayoutRelation.Equal, 1, screenshot.Bounds.Size.Width),
+                NSLayoutConstraint.Create(screenshot, NSLayoutAttribute.Height, NSLayoutRelation.Equal, 1, screenshot.Bounds.Size.Height)
+            });
+
+            _screenshotView = screenshot;
         }
 
         public void ShowScreenshot()

@@ -1,8 +1,10 @@
 ﻿namespace Turbolinks.iOS
 {
     using System;
+    using System.Collections.Generic;
     using Foundation;
     using Turbolinks.iOS.Interfaces;
+    using UIKit;
     using WebKit;
 
     public class Session : NSObject, IWebViewDelegate, IWKNavigationDelegate, IVisitDelegate, IVisitableDelegate
@@ -111,16 +113,16 @@
 
         #region Visitable restoration identifiers
 
-        NSDictionary _visitableRestorationIdentifiers = new NSDictionary();
+        Dictionary<UIViewController, string> _visitableRestorationIdentifiers = new Dictionary<UIViewController, string>();
 
         string RestorationIdentifierForVisitable(IVisitable visitable)
         {
-            return _visitableRestorationIdentifiers.ObjectForKey(visitable.VisitableViewController).ToString();
+            return _visitableRestorationIdentifiers[visitable.VisitableViewController];
         }
 
         void StoreRestorationIdentifier(string restorationIdentifier, IVisitable visitable)
         {
-            _visitableRestorationIdentifiers.SetValueForKey(new NSString(restorationIdentifier), visitable.VisitableViewController);
+            _visitableRestorationIdentifiers[visitable.VisitableViewController] = restorationIdentifier;
         }
 
         void CompleteNavigtationForCurrentVisit()
@@ -140,17 +142,28 @@
 
 		void IWebViewDelegate.DidProposeVisit(NSUrl location, Enums.Action action)
 		{
-			throw new NotImplementedException();
+            _delegate?.DidProposeVisitToURL(this, location, action);
 		}
 
 		void IWebViewDelegate.DidInvalidatePage()
 		{
-			throw new NotImplementedException();
+            if(TopMostVisitable != null)
+            {
+                TopMostVisitable.UpdateVisitableScreenshot();
+                TopMostVisitable.ShowVisitableScreenshot();
+                TopMostVisitable.ShowVisitableActivityIndicator();
+                Reload();
+            }
 		}
 
 		void IWebViewDelegate.DidFailJavaScriptEvaluation(Foundation.NSError error)
 		{
-			throw new NotImplementedException();
+            if(_currentVisit != null && _initialized)
+            {
+                _initialized = false;
+                _currentVisit.Cancel();
+                Visit(_currentVisit.Visitable);
+            }
 		}
 
 		#endregion
@@ -162,7 +175,7 @@
         void IVisitDelegate.DidInitializeWebView(Visit visit)
         {
             _initialized = true;
-            _delegate?.DidLoadWebView();
+            _delegate?.DidLoadWebView(this);
         }
 
         void IVisitDelegate.WillStart(Visit visit)
@@ -173,77 +186,163 @@
 
         void IVisitDelegate.DidStart(Visit visit)
         {
-            
+            if (!visit.HasCachedSnapshot)
+                visit.Visitable.ShowVisitableActivityIndicator();
         }
 
         void IVisitDelegate.DidComplete(Visit visit)
         {
-            throw new NotImplementedException();
+            if (!string.IsNullOrEmpty(visit.RestorationIdentifier))
+                StoreRestorationIdentifier(visit.RestorationIdentifier, visit.Visitable);
         }
 
         void IVisitDelegate.DidFail(Visit visit)
         {
-            throw new NotImplementedException();
+            visit.Visitable.ClearVisitableScreenshot();
+            visit.Visitable.ShowVisitableScreenshot();
         }
 
         void IVisitDelegate.DidFinish(Visit visit)
         {
-            throw new NotImplementedException();
+            if (_refreshing)
+            {
+                _refreshing = false;
+                visit.Visitable.VisitableDidRefresh();
+            }
         }
 
         void IVisitDelegate.WillLoadResponse(Visit visit)
         {
-            throw new NotImplementedException();
+            visit.Visitable.UpdateVisitableScreenshot();
+            visit.Visitable.ShowVisitableScreenshot();
         }
 
         void IVisitDelegate.DidRender(Visit visit)
         {
-            throw new NotImplementedException();
+            visit.Visitable.HideVisitableScreenshot();
+            visit.Visitable.HideVisitableActivityIndicator();
+            visit.Visitable.VisitableDidRender();
         }
 
         void IVisitDelegate.RequestDidStart(Visit visit)
         {
-            _delegate.DidStartRequest();
+            _delegate?.DidStartRequest(this);
         }
 
         void IVisitDelegate.RequestDidFail(Visit visit, Foundation.NSError error)
         {
-            _delegate?.DidFailRequestForVisitable(visit.Visitable, error);
+            _delegate?.DidFailRequestForVisitable(this, visit.Visitable, error);
         }
 
         void IVisitDelegate.RequestDidFinish(Visit visit)
         {
-            _delegate.DidFinishRequest();
+            _delegate.DidFinishRequest(this);
         }
 
-        void IVisitableDelegate.ViewWillAppear(IVisitable visitable)
+		#endregion
+
+
+		#region IVisitableDelegate implementation
+
+		void IVisitableDelegate.ViewWillAppear(IVisitable visitable)
         {
-            throw new NotImplementedException();
+            if (_topMostVisit == null || _currentVisit == null) return;
+
+            if(visitable == _topMostVisit.Visitable && visitable.VisitableViewController.IsMovingToParentViewController)
+            {
+                if (_topMostVisit.State == Enums.VisitState.Completed)
+                    _currentVisit.Cancel();
+                else
+                    VisitVisitable(visitable, Enums.Action.Advance);
+            }
+            else if(visitable == _currentVisit.Visitable && _currentVisit.State == Enums.VisitState.Started)
+            {
+                CompleteNavigtationForCurrentVisit();
+            }
+            else if(visitable != _topMostVisit.Visitable)
+            {
+                VisitVisitable(visitable, Enums.Action.Restore);
+            }
         }
 
         void IVisitableDelegate.ViewDidAppear(IVisitable visitable)
         {
-            throw new NotImplementedException();
+            if(_currentVisit != null && visitable == _currentVisit.Visitable)
+            {
+                CompleteNavigtationForCurrentVisit();
+                if (_currentVisit.State != Enums.VisitState.Failed)
+                    ActivateVisitable(visitable);
+            }
+            else if(_topMostVisit != null && visitable == _topMostVisit.Visitable && _topMostVisit.State == Enums.VisitState.Completed)
+            {
+                visitable.HideVisitableScreenshot();
+                visitable.HideVisitableActivityIndicator();
+                ActivateVisitable(visitable);
+            }
         }
 
         void IVisitableDelegate.DidRequestReload(IVisitable visitable)
         {
-            throw new NotImplementedException();
+            if (visitable == TopMostVisitable)
+                Reload();
         }
 
         void IVisitableDelegate.DidRequestRefresh(IVisitable visitable)
         {
-            throw new NotImplementedException();
+            if(visitable == TopMostVisitable)
+            {
+                _refreshing = true;
+                visitable.VisitableWillRefresh();
+                Reload();
+            }
         }
 
-        #endregion
+		#endregion
 
 
 
-        #region IWKNavigationDelegate implementation
+		#region IWKNavigationDelegate implementation
 
+		[Export("webView:decidePolicyForNavigationAction:decisionHandler:")]
+		public virtual void DecidePolicy(WKWebView webView, WKNavigationAction navigationAction, Action<WKNavigationActionPolicy> decisionHandler)
+        {
+            var navigationDecision = new NavigationDecision(navigationAction);
+            decisionHandler.Invoke(navigationDecision.Policy);
 
+            if (navigationDecision.ExternallyOpenableURL != null)
+                OpenExternalURL(navigationDecision.ExternallyOpenableURL);
+            else if (navigationDecision.ShouldReloadPage)
+                Reload();
+        }
 
-        #endregion
+        void OpenExternalURL(NSUrl url)
+        {
+            _delegate?.OpenExternalURL(this, url);
+        }
+
+		#endregion
+	}
+
+    class NavigationDecision
+    {
+        WKNavigationAction _navigationAction;
+
+        public NavigationDecision(WKNavigationAction navigationAction)
+        {
+            _navigationAction = navigationAction;
+        }
+
+        public WKNavigationActionPolicy Policy => 
+            (_navigationAction.NavigationType == WKNavigationType.LinkActivated || IsMainFrameNavigation) ? WKNavigationActionPolicy.Cancel : WKNavigationActionPolicy.Allow;
+
+        public NSUrl ExternallyOpenableURL => (_navigationAction.Request.Url != null && ShouldOpenURLExternally) ? _navigationAction.Request.Url : null;
+
+        public bool ShouldOpenURLExternally =>
+            (_navigationAction.NavigationType == WKNavigationType.LinkActivated || (IsMainFrameNavigation && _navigationAction.NavigationType == WKNavigationType.Other));
+
+        public bool ShouldReloadPage => (IsMainFrameNavigation && _navigationAction.NavigationType == WKNavigationType.Reload);
+
+        public bool IsMainFrameNavigation => _navigationAction.TargetFrame?.MainFrame ?? false;
+
     }
 }
