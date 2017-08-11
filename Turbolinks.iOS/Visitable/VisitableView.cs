@@ -99,7 +99,7 @@
             }
         }
 
-        public bool IsRefreshing => _refreshControl.Refreshing;
+        public bool IsRefreshing => RefreshControl.Refreshing;
 
         void InstallRefreshControl()
         {

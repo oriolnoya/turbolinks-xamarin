@@ -94,6 +94,7 @@
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
     <InterfaceDefinition Include="Main.storyboard" />
+    <InterfaceDefinition Include="ErrorView.xib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -109,6 +110,17 @@
     <Compile Include="ApplicationController.cs" />
     <Compile Include="ApplicationController.designer.cs">
       <DependentUpon>ApplicationController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DemoViewController.cs" />
+    <Compile Include="NumbersViewController.cs" />
+    <Compile Include="Error.cs" />
+    <Compile Include="TheErrorView.cs" />
+    <Compile Include="TheErrorView.designer.cs">
+      <DependentUpon>TheErrorView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ErrorView_.cs" />
+    <Compile Include="ErrorView_.designer.cs">
+      <DependentUpon>ErrorView_.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <Import Project="..\Turbolinks.iOS\Turbolinks.iOS.projitems" Label="Shared" Condition="Exists('..\Turbolinks.iOS\Turbolinks.iOS.projitems')" />

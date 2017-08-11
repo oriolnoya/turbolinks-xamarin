@@ -88,7 +88,8 @@
         {
             if (visitable != _activatedVisitable)
             {
-                DeactivateVisitable(_activatedVisitable, true);
+                if(_activatedVisitable != null)
+                    DeactivateVisitable(_activatedVisitable, true);
 
                 visitable.ActivateVisitableWebView(_webView);
 

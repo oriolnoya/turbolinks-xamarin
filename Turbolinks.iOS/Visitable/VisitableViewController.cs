@@ -7,14 +7,15 @@
 
     public class VisitableViewController : UIViewController, IVisitable
     {
-
-        VisitableView _visitableView;
-
-
         public IVisitableDelegate VisitableDelegate { get; set; }
-
         public NSUrl VisitableUrl { get; }
 
+        public VisitableViewController(NSUrl url)
+        {
+            VisitableUrl = url;
+        }
+
+        VisitableView _visitableView;
         public VisitableView VisitableView
         {
             get
@@ -53,33 +54,33 @@
         void InstallVisitableView()
         {
             View.AddSubview(_visitableView);
-            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[view]|", 0, null, NSDictionary.FromObjectAndKey(_visitableView, new NSString("view"))));
-            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[view]|", 0, null, NSDictionary.FromObjectAndKey(_visitableView, new NSString("view"))));
+            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[view]|", 0, null, NSDictionary.FromObjectAndKey(VisitableView, new NSString("view"))));
+            View.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[view]|", 0, null, NSDictionary.FromObjectAndKey(VisitableView, new NSString("view"))));
         }
 
         public void ActivateVisitableWebView(WKWebView webView)
         {
-            _visitableView.ActivateWebView(webView, this);
+            VisitableView?.ActivateWebView(webView, this);
         }
 
         public void ClearVisitableScreenshot()
         {
-            _visitableView.ClearScreenshot();
+            VisitableView?.ClearScreenshot();
         }
 
         public void DeactivateVisitableWebView()
         {
-            _visitableView.DeactivateWebView();
+            VisitableView?.DeactivateWebView();
         }
 
         public void HideVisitableActivityIndicator()
         {
-            _visitableView.HideActivityIndicator();
+            VisitableView?.HideActivityIndicator();
         }
 
         public void HideVisitableScreenshot()
         {
-            _visitableView.HideScreenshot();
+            VisitableView?.HideScreenshot();
         }
 
         public void ReloadVisitable()
@@ -89,22 +90,22 @@
 
         public void ShowVisitableActivityIndicator()
         {
-            _visitableView.ShowActivityIndicator();
+            VisitableView?.ShowActivityIndicator();
         }
 
         public void ShowVisitableScreenshot()
         {
-            _visitableView.ShowScreenshot();
+            VisitableView?.ShowScreenshot();
         }
 
         public void UpdateVisitableScreenshot()
         {
-            _visitableView.UpdateScreenshot();
+            VisitableView?.UpdateScreenshot();
         }
 
         public void VisitableDidRefresh()
         {
-            VisitableView.RefreshControl.EndRefreshing();
+            VisitableView?.RefreshControl.EndRefreshing();
         }
 
         public void VisitableDidRender()
@@ -119,7 +120,7 @@
 
         public void VisitableWillRefresh()
         {
-            VisitableView.RefreshControl.BeginRefreshing();
+            VisitableView?.RefreshControl.BeginRefreshing();
         }
     }
 }
