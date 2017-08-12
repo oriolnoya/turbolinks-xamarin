@@ -1,9 +1,11 @@
 ﻿namespace Turbolinks.iOS
 {
     using System;
+    using System.Linq;
     using System.Reflection;
     using CoreGraphics;
     using Foundation;
+    using Newtonsoft.Json;
     using ObjCRuntime;
     using WebKit;
 
@@ -15,9 +17,7 @@
 
         public WebView(WKWebViewConfiguration configuration) : base(CGRect.Empty, configuration)
         {
-            var bundle = NSBundle.FromClass(GetClassForType(GetType()));
-
-            var url = bundle.GetUrlForResource("WebView", "js");
+            var url = NSBundle.MainBundle.GetUrlForResource("WebView", "js");
 
             var data = NSData.FromUrl(url);
 
@@ -110,8 +110,6 @@
                     _delegate?.DidFailJavaScriptEvaluation(error);
                 }
             });
-
-
         }
 
         string ScriptForCallingJavascriptFunction(string functionExpression, object[] arguments)
@@ -120,7 +118,7 @@
 
             if (encodedArguments == null) return null;
 
-            return "(function(result) {\n" +
+			return "(function(result) {\n" +
 	            "  try {\n" +
 	            "    result.value = " + functionExpression + "(" + encodedArguments + ")\n" +
 	            "  } catch (error) {\n" +
@@ -133,19 +131,18 @@
 
         string EncodeJavaScriptArguments(object[] arguments)
         {
-            // TODO
+            Foundation.NSError error;
 
-            return null;
+            var data = NSJsonSerialization.Serialize(NSArray.FromObjects(arguments), 0, out error);
+            if (data == null) return null;
+
+            NSString nsStringToReturn = new NSString(data, NSStringEncoding.UTF8);
+            if (nsStringToReturn == null) return null;
+
+            var stringToReturn = nsStringToReturn.ToString();
+
+            return stringToReturn.Substring(1, stringToReturn.Length - 2);
         }
-
-        Class GetClassForType(Type type)
-		{
-            IntPtr myClassHandle = Class.GetHandle(type);
-			if (myClassHandle != IntPtr.Zero)
-				return new Class(myClassHandle);
-			else
-				return null;
-		}
 
         public void DidReceiveScriptMessage(WKUserContentController userContentController, WKScriptMessage scriptMessage)
         {
@@ -156,7 +153,7 @@
             switch(message.Name)
             {
                 case Enums.ScriptMessageName.PageLoaded:
-                    _pageLoadDelegate.DidLoadPage(message.RestorarionIdentifier);
+                    _pageLoadDelegate?.DidLoadPage(message.RestorarionIdentifier);
                     break;
                 case Enums.ScriptMessageName.PageInvalidated:
                     _delegate?.DidInvalidatePage();
@@ -165,7 +162,8 @@
                     _delegate?.DidProposeVisit(message.Location, message.Action);
                     break;
                 case Enums.ScriptMessageName.VisitStarted:
-                    _visitDelegate?.DidStartVisit(message.Identifier, (bool)message.Data["hasCachedSnapshot"]);
+                    var hasCachedSnapshot = message.Data["hasCachedSnapshot"] as NSNumber;
+                    _visitDelegate?.DidStartVisit(message.Identifier, (int)hasCachedSnapshot == 1);
                     break;
                 case Enums.ScriptMessageName.VisitRequestStarted:
                     _visitDelegate?.DidStartRequestForVisit(message.Identifier);
@@ -177,16 +175,16 @@
                     _visitDelegate?.DidFailRequestForVisit(message.Identifier, (int)message.Data["statusCode"]);
                     break;
                 case Enums.ScriptMessageName.VisitRequestFinished:
-                    _visitDelegate.DidFinishRequestForVisit(message.Identifier);
+                    _visitDelegate?.DidFinishRequestForVisit(message.Identifier);
                     break;
                 case Enums.ScriptMessageName.VisitRendered:
-                    _visitDelegate.DidRenderForVisit(message.Identifier);
+                    _visitDelegate?.DidRenderForVisit(message.Identifier);
                     break;
                 case Enums.ScriptMessageName.VisitCompleted:
-                    _visitDelegate.DidCompleteVisit(message.Identifier, message.RestorarionIdentifier);
+                    _visitDelegate?.DidCompleteVisit(message.Identifier, message.RestorarionIdentifier);
                     break;
                 case Enums.ScriptMessageName.ErrorRaised:
-                    Console.WriteLine(message.Data["error"].ToString());
+                    Console.WriteLine(message.Data["error"]);
                     break;
 
             }

@@ -2,37 +2,28 @@
 {
     public enum ScriptMessageName
     {
-        [ValueToServer("pageLoaded")]
+        None,
+
         PageLoaded,
 
-        [ValueToServer("errorRaised")]
         ErrorRaised,
 
-		[ValueToServer("visitProposed")]
         VisitProposed,
 
-		[ValueToServer("visitStarted")]
-        VisitStarted,
+		VisitStarted,
 
-		[ValueToServer("visitRequestStarted")]
-        VisitRequestStarted,
+		VisitRequestStarted,
 
-		[ValueToServer("visitRequestCompleted")]
-        VisitRequestCompleted,
+		VisitRequestCompleted,
 
-		[ValueToServer("visitRequestFailed")]
-        VisitRequestFailed,
+		VisitRequestFailed,
 
-		[ValueToServer("visitRequestFinished")]
-        VisitRequestFinished,
+		VisitRequestFinished,
 
-		[ValueToServer("visitRendered")]
-        VisitRendered,
+		VisitRendered,
 
-		[ValueToServer("visitCompleted")]
-        VisitCompleted,
+		VisitCompleted,
 
-		[ValueToServer("pageInvalidated")]
-        PageInvalidated
+		PageInvalidated
     }
 }

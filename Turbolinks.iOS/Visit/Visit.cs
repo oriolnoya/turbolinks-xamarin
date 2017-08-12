@@ -112,7 +112,7 @@
                 var previousNavigationCallback = _navigationCallback;
                 _navigationCallback = () =>
                 {
-                    previousNavigationCallback.Invoke();
+                    previousNavigationCallback?.Invoke();
                     if (_state != Enums.VisitState.Canceled)
                         callback.Invoke();
                 };

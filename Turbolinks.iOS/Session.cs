@@ -123,13 +123,16 @@
 
         string RestorationIdentifierForVisitable(IVisitable visitable)
         {
-            return _visitableRestorationIdentifiers[visitable.VisitableViewController];
+            return (_visitableRestorationIdentifiers.ContainsKey(visitable.VisitableViewController)) ? 
+                _visitableRestorationIdentifiers[visitable.VisitableViewController] : "";
         }
 
         void StoreRestorationIdentifier(string restorationIdentifier, IVisitable visitable)
         {
-            _visitableRestorationIdentifiers.Add(visitable.VisitableViewController, restorationIdentifier);
-            //_visitableRestorationIdentifiers[visitable.VisitableViewController] = restorationIdentifier;
+            if (_visitableRestorationIdentifiers.ContainsKey(visitable.VisitableViewController))
+                _visitableRestorationIdentifiers[visitable.VisitableViewController] = restorationIdentifier;
+            else
+                _visitableRestorationIdentifiers.Add(visitable.VisitableViewController, restorationIdentifier);
         }
 
         void CompleteNavigtationForCurrentVisit()
