@@ -1,12 +1,8 @@
 ﻿namespace Turbolinks.iOS
 {
     using System;
-    using System.Linq;
-    using System.Reflection;
     using CoreGraphics;
     using Foundation;
-    using Newtonsoft.Json;
-    using ObjCRuntime;
     using WebKit;
 
     public class WebView : WKWebView, IWKScriptMessageHandler
