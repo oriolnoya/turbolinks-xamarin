@@ -114,15 +114,16 @@
     <Compile Include="DemoViewController.cs" />
     <Compile Include="NumbersViewController.cs" />
     <Compile Include="Error.cs" />
-    <Compile Include="TheErrorView.cs" />
-    <Compile Include="TheErrorView.designer.cs">
-      <DependentUpon>TheErrorView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ErrorView_.cs" />
+    <Compile Include="ErrorView.cs" />
     <Compile Include="ErrorView_.designer.cs">
-      <DependentUpon>ErrorView_.cs</DependentUpon>
+      <DependentUpon>ErrorView.cs</DependentUpon>
     </Compile>
   </ItemGroup>
-  <Import Project="..\Turbolinks.iOS\Turbolinks.iOS.projitems" Label="Shared" Condition="Exists('..\Turbolinks.iOS\Turbolinks.iOS.projitems')" />
+  <ItemGroup>
+    <ProjectReference Include="..\Turbolinks.iOS\Turbolinks.iOS.csproj">
+      <Project>{49EB9C15-949C-4549-8CD8-44190463C39A}</Project>
+      <Name>Turbolinks.iOS</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

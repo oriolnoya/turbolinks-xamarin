@@ -29,6 +29,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Visit\JavaScriptVisit.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Visitable\VisitableView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Visitable\VisitableViewController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ResourceLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Enums\" />
@@ -37,5 +38,10 @@
     <Folder Include="$(MSBuildThisFileDirectory)WebView\" />
     <Folder Include="$(MSBuildThisFileDirectory)Visit\" />
     <Folder Include="$(MSBuildThisFileDirectory)Visitable\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Supporting Files\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\WebView.js" />
   </ItemGroup>
 </Project>

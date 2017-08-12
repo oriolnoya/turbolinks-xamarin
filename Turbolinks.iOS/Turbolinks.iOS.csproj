@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{49EB9C15-949C-4549-8CD8-44190463C39A}</ProjectGuid>
+    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Turbolinks.iOS</RootNamespace>
+    <AssemblyName>TurbolinksClass.iOS</AssemblyName>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
+    <MtouchFastDev>true</MtouchFastDev>
+    <IOSDebuggerPort>48530</IOSDebuggerPort>
+    <DeviceSpecificBuild>false</DeviceSpecificBuild>
+    <MtouchLink>SdkOnly</MtouchLink>
+    <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <DefineConstants></DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
+    <MtouchLink>SdkOnly</MtouchLink>
+    <MtouchHttpClientHandler>HttpClientHandler</MtouchHttpClientHandler>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Xamarin.iOS" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="NSError.cs" />
+    <Compile Include="ResourceLoader.cs" />
+    <Compile Include="ScriptMessage.cs" />
+    <Compile Include="Session.cs" />
+    <Compile Include="Enums\Action.cs" />
+    <Compile Include="Enums\ErrorCode.cs" />
+    <Compile Include="Enums\ScriptMessageName.cs" />
+    <Compile Include="Enums\VisitState.cs" />
+    <Compile Include="Interfaces\ISessionDelegate.cs" />
+    <Compile Include="Visit\ColdBootVisit.cs" />
+    <Compile Include="Visit\IVisitDelegate.cs" />
+    <Compile Include="Visit\JavaScriptVisit.cs" />
+    <Compile Include="Visit\Visit.cs" />
+    <Compile Include="Visitable\IVisitable.cs" />
+    <Compile Include="Visitable\IVisitableDelegate.cs" />
+    <Compile Include="Visitable\VisitableView.cs" />
+    <Compile Include="Visitable\VisitableViewController.cs" />
+    <Compile Include="WebView\IWebViewDelegate.cs" />
+    <Compile Include="WebView\IWebViewPageLoadDelegate.cs" />
+    <Compile Include="WebView\IWebViewVisitDelegate.cs" />
+    <Compile Include="WebView\WebView.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\WebView.js" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+</Project>
