@@ -11,8 +11,8 @@ Start the demo server by running `TurbolinksServer/demo-server` from your comman
 If you need more information please go to [their repo](https://github.com/turbolinks/turbolinks-ios#running-the-demo).
 
 
-### Why did you ported to C# and not binded the library?
-The first reason is that I want to try this hybrid approach on some app ideas I have. The second is that I tried binding the library but I had some problems so I gave up. And third and the main reason is that I want to learn Swift and I thought that porting it to C# would help me on this. I was correct :)
+### Why porting to C# and not binding the native library?
+The first reason is that I wanted to try this hybrid approach on some app ideas I have. The second is that I tried binding the library but I had some problems so I gave up. And the third reason is that I want to learn Swift and I thought that porting it to C# would help me on this. I was correct :)
 
 ### What is my roadmap from now on?
 1. Fix a known bug that makes the transition between views less smooth than it should be. I have noticed that the turbolinks.js of the server raises an error when manipulating the browser history and this makes that the appearing screen doesn't show the content until it has appeared completely. This is not the correct behaviour so I want to solve it asap. All the help would be welcome.
