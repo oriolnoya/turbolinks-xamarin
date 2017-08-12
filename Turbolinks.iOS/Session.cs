@@ -150,12 +150,12 @@
 
 		#region IWebViewDelegate implementation
 
-		void IWebViewDelegate.DidProposeVisit(NSUrl location, Enums.Action action)
+		void IWebViewDelegate.DidProposeVisit(WebView webView, NSUrl location, Enums.Action action)
 		{
             Delegate?.DidProposeVisitToURL(this, location, action);
 		}
 
-		void IWebViewDelegate.DidInvalidatePage()
+		void IWebViewDelegate.DidInvalidatePage(WebView webView)
 		{
             if(TopMostVisitable != null)
             {
@@ -166,7 +166,7 @@
             }
 		}
 
-		void IWebViewDelegate.DidFailJavaScriptEvaluation(Foundation.NSError error)
+		void IWebViewDelegate.DidFailJavaScriptEvaluation(WebView webView, Foundation.NSError error)
 		{
             if(_currentVisit != null && _initialized)
             {

@@ -8,7 +8,7 @@ namespace TurbolinksDemo.iOS
     using UIKit;
     using WebKit;
 
-    public partial class ApplicationController : UINavigationController, ISessionDelegate, IWKScriptMessageHandler
+    public partial class ApplicationController : UINavigationController, ISessionDelegate, IWKScriptMessageHandler, IAuthenticationControllerDelegate
     {
         NSUrl URL = new NSUrl("http://localhost:9292");
         WKProcessPool _webViewProcessPool = new WKProcessPool();
@@ -41,8 +41,10 @@ namespace TurbolinksDemo.iOS
             {
                 if (_session == null)
                 {
-                    _session = new Session(WebViewConfiguration);
-                    _session.Delegate = this;
+                    _session = new Session(WebViewConfiguration)
+                    {
+                        Delegate = this
+                    };
                 }
                 return _session;
             }
@@ -77,7 +79,16 @@ namespace TurbolinksDemo.iOS
 
         void PresentAuthenticationController()
         {
-            // TODO
+            var authenticationController = new AuthenticationController()
+            {
+                Title = "Sign in",
+                Delegate = this,
+                WebViewConfiguration = _webViewConfiguration,
+                Url = URL.Append("sign-in", false)
+            };
+
+            var authNavigationController = new UINavigationController(authenticationController);
+            PresentViewController(authNavigationController, true, null);
         }
 
         #region ISessionDelegate
@@ -125,12 +136,12 @@ namespace TurbolinksDemo.iOS
 
         void ISessionDelegate.OpenExternalURL(Session session, NSUrl URL)
         {
-            
+            UIApplication.SharedApplication.OpenUrl(URL);
         }
 
         void ISessionDelegate.DidLoadWebView(Session session)
         {
-            
+            session.WebView.NavigationDelegate = session;
         }
 
         void ISessionDelegate.DidStartRequest(Session session)
@@ -158,8 +169,20 @@ namespace TurbolinksDemo.iOS
             PresentViewController(alertController, true, null);
         }
 
-        #endregion
+		#endregion
 
 
-    }
+
+		#region IAuthenticationControllerDelegate
+
+		void IAuthenticationControllerDelegate.AuthenticationControllerDidAuthenticate(AuthenticationController authenticationController)
+		{
+            Session.Reload();
+            DismissViewController(true, null);
+		}
+
+		#endregion
+
+
+	}
 }

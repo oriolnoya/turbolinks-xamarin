@@ -4,8 +4,8 @@
 
     public interface IWebViewDelegate
     {
-        void DidProposeVisit(NSUrl location, Enums.Action action);
-        void DidInvalidatePage();
-        void DidFailJavaScriptEvaluation(Foundation.NSError error);
+        void DidProposeVisit(WebView webView, NSUrl location, Enums.Action action);
+        void DidInvalidatePage(WebView webView);
+        void DidFailJavaScriptEvaluation(WebView webView, Foundation.NSError error);
     }
 }

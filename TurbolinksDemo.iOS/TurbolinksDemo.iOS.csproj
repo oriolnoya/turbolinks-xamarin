@@ -118,6 +118,7 @@
     <Compile Include="ErrorView_.designer.cs">
       <DependentUpon>ErrorView.cs</DependentUpon>
     </Compile>
+    <Compile Include="AuthenticationController.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Turbolinks.iOS\Turbolinks.iOS.csproj">

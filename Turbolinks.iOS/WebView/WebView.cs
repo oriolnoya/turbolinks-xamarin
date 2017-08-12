@@ -107,7 +107,7 @@
                 }
                 else if(error != null)
                 {
-                    _delegate?.DidFailJavaScriptEvaluation(error);
+                    _delegate?.DidFailJavaScriptEvaluation(this, error);
                 }
             });
         }
@@ -156,10 +156,10 @@
                     _pageLoadDelegate?.DidLoadPage(message.RestorarionIdentifier);
                     break;
                 case Enums.ScriptMessageName.PageInvalidated:
-                    _delegate?.DidInvalidatePage();
+                    _delegate?.DidInvalidatePage(this);
                     break;
                 case Enums.ScriptMessageName.VisitProposed:
-                    _delegate?.DidProposeVisit(message.Location, message.Action);
+                    _delegate?.DidProposeVisit(this, message.Location, message.Action);
                     break;
                 case Enums.ScriptMessageName.VisitStarted:
                     var hasCachedSnapshot = message.Data["hasCachedSnapshot"] as NSNumber;
@@ -172,7 +172,8 @@
                     _visitDelegate?.DidCompleteRequestForVisit(message.Identifier);
                     break;
                 case Enums.ScriptMessageName.VisitRequestFailed:
-                    _visitDelegate?.DidFailRequestForVisit(message.Identifier, (int)message.Data["statusCode"]);
+                    var statusCode = message.Data["statusCode"] as NSNumber;
+                    _visitDelegate?.DidFailRequestForVisit(message.Identifier, (int)statusCode);
                     break;
                 case Enums.ScriptMessageName.VisitRequestFinished:
                     _visitDelegate?.DidFinishRequestForVisit(message.Identifier);
