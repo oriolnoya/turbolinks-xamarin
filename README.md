@@ -21,6 +21,8 @@ The first reason is that I wanted to try this hybrid approach on some app ideas 
 ### What is my roadmap from now on?
 1. Fix the bug as soon as possible. All the help would be welcome.
 
-2. Build a real personal project using the library.
+2. Create the nuget (my first one ever :)
 
-3. Port [xamarin-android](https://github.com/turbolinks/turbolinks-android). This is not a priority for me at this moment, so I don't know when I'll be able to do it. If somebody is interested in doing I would be glad to welcome him/her.
+3. Build a real personal project using the library.
+
+4. Port [xamarin-android](https://github.com/turbolinks/turbolinks-android). This is not a priority for me at this moment, so I don't know when I'll be able to do it. If somebody is interested in doing I would be glad to welcome him/her.
